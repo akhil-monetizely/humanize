@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clean AI Text</title>
+    <title>Text Processor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
@@ -17,10 +17,16 @@
                      class="w-full min-h-[400px] p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 ></div>
             </div>
-            <button @click="processText" 
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                Change
-            </button>
+            <div class="flex gap-4">
+                <button @click="processText" 
+                        class="flex-1 bg-blue-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Change
+                </button>
+                <button @click="copyToClipboard" 
+                        class="flex-1 bg-green-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    Copy
+                </button>
+            </div>
         </div>
     </div>
 
@@ -87,18 +93,18 @@
                 },
                 processText() {
                     let processedContent = this.content;
-                    
-                    // Replace em dashes
                     processedContent = processedContent.replace(/—/g, ' - ');
-                    
-                    // Replace contractions
                     contractions.forEach(pair => {
                         const regex = new RegExp(pair.ai, 'g');
                         processedContent = processedContent.replace(regex, pair.human);
                     });
-                    
                     this.$refs.editor.innerHTML = processedContent;
                     this.content = processedContent;
+                },
+                copyToClipboard() {
+                    navigator.clipboard.writeText(this.$refs.editor.innerText)
+                        .then(() => alert('Copied to clipboard!'))
+                        .catch(err => console.error('Failed to copy:', err));
                 }
             }
         }).mount('#app')
