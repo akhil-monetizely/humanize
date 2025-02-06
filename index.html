@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Processor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div id="app" class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="prose max-w-none">
+                <div contenteditable="true" 
+                     ref="editor"
+                     @input="updateContent"
+                     class="w-full min-h-[400px] p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                ></div>
+            </div>
+            <button @click="processText" 
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Change
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const contractions = [
+            {"human":"can't","ai":"cannot"},
+            {"human":"don't","ai":"do not"},
+            {"human":"isn't","ai":"is not"},
+            {"human":"won't","ai":"will not"},
+            {"human":"aren't","ai":"are not"},
+            {"human":"hasn't","ai":"has not"},
+            {"human":"wasn't","ai":"was not"},
+            {"human":"weren't","ai":"were not"},
+            {"human":"wouldn't","ai":"would not"},
+            {"human":"shouldn't","ai":"should not"},
+            {"human":"couldn't","ai":"could not"},
+            {"human":"mightn't","ai":"might not"},
+            {"human":"mustn't","ai":"must not"},
+            {"human":"I'm","ai":"I am"},
+            {"human":"you're","ai":"you are"},
+            {"human":"he's","ai":"he is"},
+            {"human":"she's","ai":"she is"},
+            {"human":"it's","ai":"it is"},
+            {"human":"we're","ai":"we are"},
+            {"human":"they're","ai":"they are"},
+            {"human":"I'll","ai":"I will"},
+            {"human":"you'll","ai":"you will"},
+            {"human":"he'll","ai":"he will"},
+            {"human":"she'll","ai":"she will"},
+            {"human":"it'll","ai":"it will"},
+            {"human":"we'll","ai":"we will"},
+            {"human":"they'll","ai":"they will"},
+            {"human":"I've","ai":"I have"},
+            {"human":"you've","ai":"you have"},
+            {"human":"we've","ai":"we have"},
+            {"human":"they've","ai":"they have"},
+            {"human":"he'd","ai":"he would"},
+            {"human":"she'd","ai":"she would"},
+            {"human":"I'd","ai":"I would"},
+            {"human":"you'd","ai":"you would"},
+            {"human":"we'd","ai":"we would"},
+            {"human":"they'd","ai":"they would"},
+            {"human":"there's","ai":"there is"},
+            {"human":"here's","ai":"here is"},
+            {"human":"that's","ai":"that is"},
+            {"human":"what's","ai":"what is"},
+            {"human":"where's","ai":"where is"},
+            {"human":"who's","ai":"who is"},
+            {"human":"how's","ai":"how is"},
+            {"human":"let's","ai":"let us"}
+        ];
+
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    content: ''
+                }
+            },
+            methods: {
+                updateContent(e) {
+                    this.content = e.target.innerHTML;
+                },
+                processText() {
+                    let processedContent = this.content;
+                    
+                    // Replace em dashes
+                    processedContent = processedContent.replace(/—/g, ' - ');
+                    
+                    // Replace contractions
+                    contractions.forEach(pair => {
+                        const regex = new RegExp(pair.ai, 'g');
+                        processedContent = processedContent.replace(regex, pair.human);
+                    });
+                    
+                    this.$refs.editor.innerHTML = processedContent;
+                    this.content = processedContent;
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
