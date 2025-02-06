@@ -7,27 +7,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen p-4">
+<body class="bg-gray-100 min-h-screen p-8">
     <div id="app" class="max-w-4xl mx-auto">
-        <div class="bg-white rounded-lg shadow-lg p-4">
+        <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="prose max-w-none">
                 <div contenteditable="true" 
                      ref="editor"
                      @input="updateContent"
-                     class="w-full min-h-[400px] p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-pre-wrap"
+                     class="w-full min-h-[400px] p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 ></div>
             </div>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex gap-4">
                 <button @click="processText" 
-                        class="flex-1 min-w-[150px] bg-blue-500 text-white px-4 py-3 text-lg font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        class="flex-1 bg-blue-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Change
                 </button>
-                <button @click="cleanFormatting"
-                        class="flex-1 min-w-[150px] bg-yellow-500 text-white px-4 py-3 text-lg font-semibold rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
-                    Clean
-                </button>
                 <button @click="copyToClipboard" 
-                        class="flex-1 min-w-[150px] bg-green-500 text-white px-4 py-3 text-lg font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                        class="flex-1 bg-green-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                     Copy
                 </button>
             </div>
@@ -104,13 +100,6 @@
                     });
                     this.$refs.editor.innerHTML = processedContent;
                     this.content = processedContent;
-                },
-                cleanFormatting() {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = this.$refs.editor.innerHTML;
-                    const cleanText = tempDiv.innerText;
-                    this.$refs.editor.innerHTML = cleanText;
-                    this.content = cleanText;
                 },
                 copyToClipboard() {
                     navigator.clipboard.writeText(this.$refs.editor.innerText)
