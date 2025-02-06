@@ -84,12 +84,16 @@
         createApp({
             data() {
                 return {
-                    content: ''
+                    content: localStorage.getItem('editorContent') || ''
                 }
+            },
+            mounted() {
+                this.$refs.editor.innerHTML = this.content;
             },
             methods: {
                 updateContent(e) {
                     this.content = e.target.innerHTML;
+                    localStorage.setItem('editorContent', this.content);
                 },
                 processText() {
                     let processedContent = this.content;
@@ -100,6 +104,7 @@
                     });
                     this.$refs.editor.innerHTML = processedContent;
                     this.content = processedContent;
+                    localStorage.setItem('editorContent', processedContent);
                 },
                 copyToClipboard() {
                     navigator.clipboard.writeText(this.$refs.editor.innerText)
