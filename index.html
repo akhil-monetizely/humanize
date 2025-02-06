@@ -22,6 +22,10 @@
                         class="flex-1 bg-blue-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Change
                 </button>
+                <button @click="cleanFormatting"
+                        class="flex-1 bg-yellow-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+                    Clean
+                </button>
                 <button @click="copyToClipboard" 
                         class="flex-1 bg-green-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                     Copy
@@ -105,6 +109,11 @@
                     navigator.clipboard.writeText(this.$refs.editor.innerText)
                         .then(() => alert('Copied to clipboard!'))
                         .catch(err => console.error('Failed to copy:', err));
+                },
+                cleanFormatting() {
+                    const plainText = this.$refs.editor.innerText;
+                    this.$refs.editor.innerHTML = plainText;
+                    this.content = plainText;
                 }
             }
         }).mount('#app')
